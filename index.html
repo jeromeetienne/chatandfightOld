@@ -4,25 +4,17 @@
 <script src="vendor/webaudio-bundle.js"></script>
 
 <script>
+// Load simplemmoserver - depends on localhost or inet hosting
 (function(){ 
-	var onLocalhost	= ['localhost', '127.0.0.1'].indexOf(window.location.hostname) !== -1;
+	var onLocalhost	= ['localhost', '127.0.0.1'].indexOf(location.hostname) !== -1;
 	var serverUrl	= onLocalhost ? 'http://localhost:4000/' : 'http://simplemmoserver.jit.su:80/';
-	var load	= function(urlPath){
-		var script	= document.createElement('script');
-		script.type	= 'text/javascript';
-		script.src	= serverUrl+urlPath;
-		var tmp		= document.getElementsByTagName('script')[0]; 
-		tmp.parentNode.insertBefore(script, tmp);
-	}
-	var load	= function(url){
-		document.write("\x3cscript src='"+url+"'>\x3c/script>");
-	}
+	var load	= function(url){ document.write("\x3cscript src='"+url+"'>\x3c/script>"); };
 	load(serverUrl+'socket.io/socket.io.js');
 	load(serverUrl+'examples/client.js');
 })();	
 </script>
 
-<body><div style="position: absolute; font-size: 200%; right: 0; top: 0.5em; z-index: 1; text-align: right;">
+<body><div style="position: absolute; font-size: 200%; right: 0; top: 1.5em; z-index: 1; text-align: right;">
 	<form action="javascript:void(0)" id='nicknameForm' style='display: inline-block'>
 		<input type="text"/>
 	</form>
@@ -51,6 +43,11 @@
 	<form action="javascript:void(0)" id='chatInputForm'>
 		<input size=104 type="text" placeholder='Chat here'/>
 	</form>
+</div><div id='info' style='color: #fff;'>
+	<span style='font-size: 140%'>Chat And Fight - Chat with friends in 3D</span>
+	<br/>
+	3D with <a href='http://mrdoob.github.com/three.js/' style='color: inherit;' target='_blank'>three.js</a> thru
+	<a href='http://jeromeetienne.github.com/tquery/' style='color: inherit;' target='_blank'>tQuery API</a>
 </div><script>
 requirejs.config({
 	paths	: {
@@ -67,7 +64,7 @@ require([
 	, 'tquery.light', 'tquery.minecraft'
 	, 'tquery.montainarena'
 	, 'tquery.text'], function(){
-	var world	= tQuery.createWorld().boilerplate({
+	var world	= tQuery.createWorld().pageTitle('#info').boilerplate({
 		fullscreen	: false,
 		screenshot	: false
 	}).start();
@@ -181,7 +178,7 @@ require([
 
 
 	// initiate connect with server
-	var onLocalhost	= ['localhost', '127.0.0.1'].indexOf(window.location.hostname) !== -1;
+	var onLocalhost	= ['localhost', '127.0.0.1'].indexOf(location.hostname) !== -1;
 	var serverUrl	= onLocalhost ? 'http://localhost:4000/' : 'http://simplemmoserver.jit.su:80';
 	var userInfo	= {
 		nickName	: 'Player-'+Math.floor(Math.random()*10000).toString(16),
