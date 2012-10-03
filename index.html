@@ -4,17 +4,21 @@
 <script src="vendor/webaudio-bundle.js"></script>
 
 <script>
-(function(){
-	var onLocalhost	= window.location.hostname === 'localhost' ||  window.location.hostname === '127.0.0.1';
+(function(){ 
+	var onLocalhost	= ['localhost', '127.0.0.1'].indexOf(window.location.hostname) !== -1;
 	var serverUrl	= onLocalhost ? 'http://localhost:4000/' : 'http://simplemmoserver.jit.su:80/';
-
-	var script	= document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-	script.src	= serverUrl+'socket.io/socket.io.js';
-	var tmp		= document.getElementsByTagName('script')[0]; tmp.parentNode.insertBefore(script, tmp);
-
-	var script	= document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-	script.src	= serverUrl+'examples/client.js';
-	var tmp		= document.getElementsByTagName('script')[0]; tmp.parentNode.insertBefore(script, tmp);
+	var load	= function(urlPath){
+		var script	= document.createElement('script');
+		script.type	= 'text/javascript';
+		script.src	= serverUrl+urlPath;
+		var tmp		= document.getElementsByTagName('script')[0]; 
+		tmp.parentNode.insertBefore(script, tmp);
+	}
+	var load	= function(url){
+		document.write("\x3cscript src='"+url+"'>\x3c/script>");
+	}
+	load(serverUrl+'socket.io/socket.io.js');
+	load(serverUrl+'examples/client.js');
 })();	
 </script>
 
